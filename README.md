@@ -4,7 +4,7 @@
 
 ```
 npm install --save-dev @pain-org/rollup typescript tslib@1.13.0
-npm install --save-dev @pain-org/eslint-config eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-scope
+npm install --save-dev @pain-org/eslint-config eslint prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-scope eslint-config-prettier typescript
 ```
 
 ### .eslintrc.js
