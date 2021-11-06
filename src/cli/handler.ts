@@ -1,7 +1,7 @@
 import { BuildOptionBundle } from "../interfaces/cli.interface";
+import { handler as ariaHandler } from "aria-build";
 import { eslint } from "../build/eslint";
 import { prettier } from "../build/prettier";
-import {bundle} from "../build/bundle";
 
 export async function handler(options: BuildOptionBundle) {
     options.eslintOnly = options["eslint-only"] || options.eslintOnly;
@@ -22,5 +22,5 @@ export async function handler(options: BuildOptionBundle) {
     if (options.eslintOnly || options.prettierOnly) {
         return Promise.resolve();
     }
-    await bundle(options);
+    await ariaHandler(options);
 }
