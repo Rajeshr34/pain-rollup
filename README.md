@@ -22,6 +22,22 @@ module.exports = {
 pain-rollup -d -f es --compress
 ```
 
+####Fix Eslint through lint-staged eg:
+
+```
+"lint-staged": {
+  "*.{tsx,ts,js,css,md}": [
+    "pain-rollup --eslint-only --e-ext=ts,tsx,js,css,md"
+  ]
+}
+```
+
+####Fix Eslint through path eg:
+
+```
+pain-rollup --eslint-only --e-ext=ts,tsx,js,css,md ./src
+```
+
 ### CLI Options
 
 ```
@@ -63,5 +79,39 @@ pain-rollup -d -f es --compress
 ### API Setup
 
 ```javascript
+import { bundle, BundleOptions, clean, eslint, TSRollupConfig } from "@pain-org/rollup";
 
+(async function () {
+    const pkg = require("./package.json");
+
+    const external = [...Object.keys(pkg.dependencies)];
+
+    const config: TSRollupConfig = {
+        input: "./src/index.ts",
+        external,
+        output: [
+            {
+                file: "./dist/<package>-build.es.js",
+                format: "es",
+            },
+            {
+                file: "./dist/<package>-build.js",
+                format: "cjs",
+            },
+        ],
+        tsconfig: {
+            compilerOptions: {
+                declaration: true,
+            },
+        },
+    };
+    const overRideOptions: BundleOptions = { config, esbuild: true, write: true };
+    // const opts = await createOptions(overRideOptions);
+    await eslint({
+        eslintOnly: true,
+        "e-ext": "ts,tsx,js,json",
+    });
+    await clean("dist");
+    await bundle(overRideOptions);
+})();
 ```
