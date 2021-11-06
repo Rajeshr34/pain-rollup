@@ -26,8 +26,8 @@ pain-rollup -d -f es --compress
 
 ```
 "lint-staged": {
-  "*.{tsx,ts,js,css,md}": [
-    "pain-rollup --eslint-only --e-ext=ts,tsx,js,css,md"
+  "*.{tsx,ts,js,css}": [
+    "pain-rollup --eslint-only --e-ext=ts,tsx,js,css"
   ]
 }
 ```
@@ -35,7 +35,7 @@ pain-rollup -d -f es --compress
 ####Fix Eslint through path eg:
 
 ```
-pain-rollup --eslint-only --e-ext=ts,tsx,js,css,md ./src
+pain-rollup --eslint-only --e-ext=ts,tsx,js,css ./src
 ```
 
 ### CLI Options
@@ -65,9 +65,9 @@ pain-rollup --eslint-only --e-ext=ts,tsx,js,css,md ./src
     --esbuild            Enabled esbuild plugin to use transform ts,js,jsx,tsx
     --swc                Enabled swc plugin to transform ts,js,jsx,tsx
     -p, --prettier       Run Prettier Check and Fix
-    --p-ext              Eslint Default Extensions  (default tsx,ts,js,css,md)
+    --p-ext              Eslint Default Extensions  (default tsx,ts,js,css)
     -e, --eslint         Run Eslint Check and Fix
-    --e-ext              Eslint Default Extensions  (default tsx,ts,js,css,md)
+    --e-ext              Eslint Default Extensions  (default tsx,ts,js,css)
     --eslint-only        Run Eslint Only  (default false)
     --prettier-only      Run Prettier Only  (default false)
     --check-only         Instead of fixing eslint or prettier this only check and throws errors if found  (default false)
@@ -108,7 +108,7 @@ import { bundle, BundleOptions, clean, eslint, TSRollupConfig } from "@pain-org/
     const overRideOptions: BundleOptions = { config, esbuild: true, write: true };
     // const opts = await createOptions(overRideOptions);
     await eslint({
-        eslintOnly: true,
+        eslintOnly: false,
         "e-ext": "ts,tsx,js,json",
     });
     await clean("dist");

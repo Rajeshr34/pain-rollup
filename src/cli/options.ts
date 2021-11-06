@@ -6,9 +6,9 @@ export const getOptions = () => {
     op.options.push(
         ...[
             { alias: "-p, --prettier", description: "Run Prettier Check and Fix" },
-            { alias: "--p-ext", description: "Eslint Default Extensions", defaultValue: "tsx,ts,js,css,md" },
+            { alias: "--p-ext", description: "Eslint Default Extensions", defaultValue: "tsx,ts,js,css" },
             { alias: "-e, --eslint", description: "Run Eslint Check and Fix" },
-            { alias: "--e-ext", description: "Eslint Default Extensions", defaultValue: "tsx,ts,js,css,md" },
+            { alias: "--e-ext", description: "Eslint Default Extensions", defaultValue: "tsx,ts,js,css" },
             { alias: "--eslint-only", description: "Run Eslint Only", defaultValue: false },
             { alias: "--prettier-only", description: "Run Prettier Only", defaultValue: false },
             {
