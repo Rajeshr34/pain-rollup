@@ -1,15 +1,10 @@
-import {
-    BuildFormatOptions,
-    bundle as AriaBundle,
-    clean as AriaClean,
-    CreateRollupConfigBuilderOptions,
-    TSRollupConfig as AriaTSRollupConfig,
-} from "aria-build";
+import * as ariaBuild from "aria-build";
 
-export type BundleOptions = CreateRollupConfigBuilderOptions | BuildFormatOptions;
-export type TSRollupConfig = AriaTSRollupConfig;
-export const clean = AriaClean;
+export type BundleOptions = ariaBuild.CreateRollupConfigBuilderOptions | ariaBuild.BuildFormatOptions;
+export type TSRollupConfig = ariaBuild.TSRollupConfig;
+export const clean = ariaBuild.clean;
+export const createOptions = ariaBuild.createOptions;
 
 export async function bundle(options: BundleOptions) {
-    return AriaBundle(options);
+    return ariaBuild.bundle(options);
 }
