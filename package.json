@@ -1,6 +1,6 @@
 {
     "name": "@pain-org/rollup",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Zero configuration CLI bundler or packager for typescript and javascript",
     "main": "rollup.js",
     "bin": {
