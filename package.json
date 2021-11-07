@@ -8,7 +8,7 @@
     },
     "scripts": {
         "build": "node ./bin/rollup.js -d",
-        "eslintOnly": "node ./bin/rollup.js --eslint-only -i src",
+        "eslint": "node ./bin/rollup.js --eslint-only -i src",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Rajesh",
@@ -51,7 +51,7 @@
     },
     "lint-staged": {
         "*.{tsx,ts,js,css}": [
-            "yarn eslintOnly"
+            "yarn eslint"
         ]
     }
 }

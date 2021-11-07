@@ -16,7 +16,10 @@ export async function replace(filename: string) {
 
 export const plugins = [
     copy({
-        targets: [{ src: "bin/*", dest: "dist/bin", replace }],
+        targets: [
+            { src: "bin/*", dest: "dist/bin", replace },
+            { src: "config/*", dest: "dist/config", replace }
+        ],
         copyEnd: async () => {},
     }),
 ];
