@@ -6,16 +6,19 @@ export async function eslint(options: BuildOptionBundle) {
     try {
         const eslint = new ESLint({fix: !options.checkOnly, cache: true});
         let files = extensions(options["e-ext"]);
-        if (!files || files.length === 0) {
+
+        if ((!files || files.length === 0) && options.entry) {
             files = [options.entry];
         }
+        console.log(options)
+        files = files.filter(String);
         if (files.length > 0) {
             const results = await eslint.lintFiles(files);
             const formatter = await eslint.loadFormatter("stylish");
             const resultText = formatter.format(results);
             console.log(resultText);
         } else {
-            if (options.checkOnly) {
+            if (options.checkOnly || options.eslintOnly) {
                 throw Error("Required Files/Folder to run esLint please provide it by 'entry' key from object or path through argument")
             }
         }

@@ -1,8 +1,9 @@
 import { getOptions } from "./options";
-import { handler } from "./handler";
+import {handler} from "./handler";
 
 export async function run(version: string) {
     const cliOptions = getOptions();
+    /* eslint @typescript-eslint/no-var-requires: "off" */
     const program = require("sade")(cliOptions.package, true);
     await Promise.all(
         cliOptions.options.map((option) => {
