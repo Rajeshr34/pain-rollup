@@ -51,7 +51,7 @@
     },
     "lint-staged": {
         "*.{tsx,ts,js,css}": [
-            "yarn eslint"
+            "node ./bin/rollup.js --eslint-only"
         ]
     }
 }
