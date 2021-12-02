@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-npm install --save-dev @pain-org/rollup typescript tslib@1.13.0
+ yarn add @pain-org/rollup @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier eslint-scope prettier typescript -D
 ```
 
 ### .eslintrc.js
@@ -13,6 +13,19 @@ module.exports = {
     extends: "@pain-org/eslint-config"
 };
 
+```
+
+### tsconfig.json
+
+```
+{
+    "extends": "@pain-org/rollup/config/tsconfig.base.json",
+    "compilerOptions": {
+    },
+    "include": [
+        "./src/index.ts"
+    ]
+}
 ```
 
 ### Usage
