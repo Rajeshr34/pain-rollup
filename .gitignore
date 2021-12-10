@@ -1,5 +1,6 @@
-# Dependency directories
 node_modules/
+lerna-debug.log
 yarn-error.log
+.idea/*
+!.idea/codeStyles
 dist/
-/.eslintcache

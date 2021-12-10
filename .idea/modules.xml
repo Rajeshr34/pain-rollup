@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/@rajesh-rollup.iml" filepath="$PROJECT_DIR$/.idea/@rajesh-rollup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/rollup-2.iml" filepath="$PROJECT_DIR$/.idea/rollup-2.iml" />
     </modules>
   </component>
 </project>

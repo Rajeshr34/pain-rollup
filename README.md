@@ -1,129 +1,63 @@
 # @pain-org/rollup
 
-## Installation
-
 ```
- yarn add @pain-org/rollup @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier eslint-scope prettier typescript -D
+ yarn add @pain-org/rollup
 ```
 
-### .eslintrc.js
+## `pain-rollup build --help`
+
+##### `eg: pain-rollup build -f cjs -v true -s true`
+
+##### `eg: pain-rollup build -f "cjs,es,umd" -v true`
 
 ```
-module.exports = {
-    extends: "@pain-org/eslint-config"
-};
+Usage: build [options]
 
+Options:
+  -t --target <value>                       Specify Target File (default: "./src/index.ts")
+  -f --format <amd,cjs,es,iife,umd,system>  Build specified formats (default: ["es","cjs"])
+  -rc --pain-config <item>                  config file of pain-rollup. i.e pain.config.ts
+  -d --declaration <true|false>             Generates corresponding .d.ts file (default: true)
+  -o --output <item>                        Generate source map (default: "dist")
+  -c --compress <true|false>                Compress or minify the output (default: true)
+  -s --sourcemap <true|false>               Generate source map (default: false)
+  -v --visualizer <true|false>              Visualize and analyze your Rollup bundle to see which modules are taking up space. (default: false)
+  -r --resolve <true|false>                 Resolve dependencies (default: false)
+  -p --preserve-modules <true|false>        Keep directory structure and files (default: false)
+  -h, --help                                display help for command
 ```
 
-### tsconfig.json
+#### bundling can control with `pain.config.ts` file on root folder
+
+```
+import { Plugin } from 'rollup'
+import { PainCustomConfigInterface, PackageInfoInterface } from '@pain-org/rollup'
+
+export const painConfig = async (pkgInfo: PackageInfoInterface, tagetPath: string): Promise<PainCustomConfigInterface> => {
+    return <PainCustomConfigInterface>{
+        replace: {
+            //search and replace,
+        },
+        plugins: (list: (Plugin | null | false | undefined)[]) => {
+            // modifiy plugins add/remove and return the list
+            return list
+        },
+        callbacks: {
+            // onComplete: async() => {},
+            // onStart: async() => {},
+        },
+        // copy: [{ source: 'README.md' }, { source: 'tsconfig.json', target: './config/tsconfig.json' }],
+    }
+}
+```
+
+### Default Search and replace
 
 ```
 {
-    "extends": "@pain-org/rollup/config/tsconfig.base.json",
-    "compilerOptions": {
-    },
-    "include": [
-        "./src/index.ts"
-    ]
+    __buildDate__: "Replaces With Current Date"
+    __buildVersion__: "Replaces with package.json version"
+    __git_hash__: "Replaces with your last commit id from the current branch"
+    __git_branch__: "Replaces with your current branch"
 }
-```
-
-### Usage
-
-```
-pain-rollup -d -f es --compress
-```
-
-####Fix Eslint through lint-staged eg:
-
-```
-"lint-staged": {
-  "*.{tsx,ts,js,css}": [
-    "pain-rollup --eslint-only --e-ext=ts,tsx,js,css"
-  ]
-}
-```
-
-####Fix Eslint through path eg:
-
-```
-pain-rollup --eslint-only --e-ext=ts,tsx,js,css ./src
-```
-
-### CLI Options
-
-```
-  Usage
-    $ pain-rollup [options]
-
-  Options
-    -i, --entry          Entry modules
-    -d, --declaration    Generates corresponding .d.ts file  (default false)
-    -f, --format         Build specified formats  (default es,cjs)
-    -o, --output         Directory to place build files into  (default dist)
-    -c, --config         config file of aria-build. i.e aria.config.ts
-    -w, --watch          Rebuilds on any change  (default false)  (default false)
-    --dts-only           Generate Declation types only  (default false)
-    --external           Specify external dependencies  (default )
-    --name               Specify name exposed in UMD builds
-    --globals            Specify global dependencies
-    --compress           Compress or minify the output
-    --sourcemap          Generate sourcemap  (default false)
-    --resolve            Resolve dependencies
-    --target             Target framework or library to build (i.e react or vue)
-    --clean              Clean the dist folder default (dist)  (default dist)
-    --write              Write the output to disk default to true  (default true)
-    --bundler            Bundler to enabled default (esbuild), esbuild | swc | ts  (default esbuild)
-    --esbuild            Enabled esbuild plugin to use transform ts,js,jsx,tsx
-    --swc                Enabled swc plugin to transform ts,js,jsx,tsx
-    -p, --prettier       Run Prettier Check and Fix
-    --p-ext              Eslint Default Extensions  (default tsx,ts,js,css)
-    -e, --eslint         Run Eslint Check and Fix
-    --e-ext              Eslint Default Extensions  (default tsx,ts,js,css)
-    --eslint-only        Run Eslint Only  (default false)
-    --prettier-only      Run Prettier Only  (default false)
-    --check-only         Instead of fixing eslint or prettier this only check and throws errors if found  (default false)
-    -v, --version        Displays current version
-    -h, --help           Displays this message
-
-```
-
-### API Setup
-
-```javascript
-import { bundle, BundleOptions, clean, eslint, TSRollupConfig } from "@pain-org/rollup";
-
-(async function () {
-    const pkg = require("./package.json");
-
-    const external = [...Object.keys(pkg.dependencies)];
-
-    const config: TSRollupConfig = {
-        input: "./src/index.ts",
-        external,
-        output: [
-            {
-                file: "./dist/<package>-build.es.js",
-                format: "es",
-            },
-            {
-                file: "./dist/<package>-build.js",
-                format: "cjs",
-            },
-        ],
-        tsconfig: {
-            compilerOptions: {
-                declaration: true,
-            },
-        },
-    };
-    const overRideOptions: BundleOptions = { config, esbuild: true, write: true };
-    // const opts = await createOptions(overRideOptions);
-    await eslint({
-        eslintOnly: false,
-        "e-ext": "ts,tsx,js,json",
-    });
-    await clean("dist");
-    await bundle(overRideOptions);
-})();
 ```

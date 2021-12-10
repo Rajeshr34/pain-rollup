@@ -1,3 +1,17 @@
 {
-    "extends": "./config/tsconfig.base.json"
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "types": ["node"],
+        "outDir": "dist",
+        "moduleResolution": "Node",
+        "allowJs": true,
+        "noEmit": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["./src/index.ts"]
 }

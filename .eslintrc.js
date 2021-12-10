@@ -1,3 +1,3 @@
 module.exports = {
-    extends: "@pain-org/eslint-config",
-};
+    extends: '@pain-org/eslint-config',
+}
