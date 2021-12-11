@@ -1,7 +1,7 @@
-import { emptyDir, mkdirSync } from 'fs-extra'
+import { emptyDir, mkdirSync, copySync } from 'fs-extra'
 import createProgressEstimator from 'progress-estimator'
 import { OutputOptions, rollup, RollupOptions } from 'rollup'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, lstatSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, join, relative, resolve } from 'path'
 import { BuildOptionsInterface, globalConfig } from '../interfaces'
 
@@ -35,9 +35,13 @@ export const copyFile = (source: string, target?: string, modify?: (data: string
         target = join(globalConfig.targetDistFolderPath, target)
     }
     mkdirSync(dirname(target), { recursive: true })
-    let data = readFileSync(source, { encoding: 'utf-8' })
-    if (modify) data = modify(data)
-    writeFile(target, data)
+    if (isDir(resolve(source))) {
+        copySync(resolve(source), target)
+    } else {
+        let data = readFileSync(source, { encoding: 'utf-8' })
+        if (modify) data = modify(data)
+        writeFile(target, data)
+    }
 }
 
 export const writeFile = (targetPath: string, content: string) => {
@@ -129,4 +133,14 @@ export const logError: (error: { failedAt?: string; message?: unknown; fullError
     if (failedAt) console.error(`✗ FAILED AT: ${failedAt}`, '\n')
     if (message) console.error(message, '\n')
     if (fullError) console.error(fullError, '\n')
+}
+
+export const isDir = (dirPath: string) => {
+    try {
+        const stat = lstatSync(dirPath)
+        return stat.isDirectory()
+    } catch (e) {
+        // lstatSync throws an error if path doesn't exist
+        return false
+    }
 }

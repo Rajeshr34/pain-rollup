@@ -10,5 +10,6 @@ export const painConfig = async (pkgInfo: any, tagetPath: string) => {
             // onComplete: () => {},
         },
         copy: [{ source: 'README.md' }, { source: 'tsconfig.json', target: './config/tsconfig.json' }],
+        watch: {},
     }
 }

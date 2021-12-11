@@ -1,4 +1,4 @@
-import { Plugin } from 'rollup'
+import { Plugin, WatcherOptions } from 'rollup'
 
 export interface BuildOptionsInterface {
     target: string
@@ -50,11 +50,11 @@ export interface PainCustomConfigInterface {
         onComplete?: () => Promise<void>
     }
     copy?: copyFileFoldersInterface[]
+    watch?: WatcherOptions
 }
 
 export interface copyFileFoldersInterface {
     source: string
-    isFolder?: boolean
     target?: string
     modify?: (data: string) => string
 }

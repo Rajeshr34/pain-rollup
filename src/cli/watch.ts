@@ -20,7 +20,7 @@ export const painWatch = async (options: BuildOptionsInterface) => {
     const { rollConfig, userConfig } = await getInputOptions(options)
     await cleanDist(globalConfig.targetDistFolderPath)
     //await build(options)
-    const watcher = watch({ ...rollConfig, watch: {} })
+    const watcher = watch({ ...rollConfig, watch: { ...(userConfig.watch ? userConfig.watch : {}) } })
     watcher.on('event', (event) => {
         switch (event.code) {
             case 'START':
