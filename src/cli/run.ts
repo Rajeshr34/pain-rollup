@@ -2,6 +2,7 @@ import { Command, Option } from 'commander'
 import { build } from './build'
 import { outputFormats } from './input.options'
 import { BuildOptionsInterface, WatchOptionsInterface } from '../interfaces/cli.interface'
+import { painWatch } from './watch'
 
 function splitSeparateList(value: string, defaultValue?: string | undefined): string | undefined {
     if (value) {
@@ -83,8 +84,8 @@ export async function run(version: string) {
 
     const watchCmd = new Command('watch')
     commonCommand(watchCmd)
-    watchCmd.action((args: WatchOptionsInterface) => {
-        console.log('One Callback ', args)
+    watchCmd.action(async (args: WatchOptionsInterface) => {
+        await painWatch(args)
     })
 
     program.addCommand(buildCmd)

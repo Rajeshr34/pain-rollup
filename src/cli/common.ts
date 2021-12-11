@@ -1,9 +1,9 @@
 import { emptyDir, mkdirSync } from 'fs-extra'
 import createProgressEstimator from 'progress-estimator'
 import { OutputOptions, rollup, RollupOptions } from 'rollup'
-import { readFileSync, writeFileSync } from 'fs'
-import { dirname, join, relative } from 'path'
-import { globalConfig } from './build'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { dirname, join, relative, resolve } from 'path'
+import { BuildOptionsInterface, globalConfig } from '../interfaces'
 
 export const progressEstimator = createProgressEstimator()
 
@@ -77,4 +77,56 @@ export const commonReplace = () => {
         '__',
         '__'
     )
+}
+
+export const nearestPackageFile = (folder: string, limit = 10): string => {
+    if (limit === 0) return folder
+    if (existsSync(join(folder, 'package.json'))) {
+        return folder
+    } else {
+        return nearestPackageFile(dirname(folder), limit - 1)
+    }
+}
+
+export const setPaths = async (options: BuildOptionsInterface) => {
+    globalConfig.targetPath = resolve()
+    globalConfig.cliPath = nearestPackageFile(dirname(__filename))
+    globalConfig.targetDistFolderPath = join(globalConfig.targetPath, options.output)
+}
+
+export const loadPackageInfo = async () => {
+    globalConfig.packageInfo = JSON.parse(readFileSync(join(globalConfig.targetPath, 'package.json'), 'utf-8'))
+    globalConfig.packageInfo.nameWithoutScope = globalConfig.packageInfo.name?.split('/').pop()
+}
+
+export const clearConsole: () => void = () => {
+    process.stdout.write(process.platform === 'win32' ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H')
+}
+
+export const earth = ['🌎', '🌏', '🌍']
+export let currentEarth = 2
+
+export const rotateEarth = () => {
+    if (currentEarth === 2) currentEarth = 0
+    else {
+        currentEarth = currentEarth + 1
+    }
+    return earth[currentEarth]
+}
+
+export const logTsError: (error: { failedAt?: string; message: unknown }) => void = ({ failedAt, message }) => {
+    logError({
+        failedAt,
+        message: `TypeScript Error: ${message}`,
+    })
+}
+
+export const logError: (error: { failedAt?: string; message?: unknown; fullError?: unknown }) => void = ({
+    failedAt,
+    message,
+    fullError,
+}) => {
+    if (failedAt) console.error(`✗ FAILED AT: ${failedAt}`, '\n')
+    if (message) console.error(message, '\n')
+    if (fullError) console.error(fullError, '\n')
 }

@@ -1,6 +1,5 @@
-import { BuildOptionsInterface, PainCustomConfigInterface } from '../interfaces/cli.interface'
+import { BuildOptionsInterface, globalConfig, PainCustomConfigInterface } from '../interfaces/cli.interface'
 import { ModuleFormat, OutputOptions, Plugin, RollupOptions } from 'rollup'
-import { globalConfig } from './build'
 import { terser } from 'rollup-plugin-terser'
 import { join } from 'path'
 import nodeResolve from '@rollup/plugin-node-resolve'

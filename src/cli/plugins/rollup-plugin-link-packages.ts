@@ -1,7 +1,7 @@
-import { globalConfig } from '../build'
 import { existsSync, symlinkSync } from 'fs'
 import { mkdirSync } from 'fs-extra'
 import { dirname } from 'path'
+import { globalConfig } from '../../interfaces'
 
 export const rollupPluginLinkPackages = (hook?: string) => {
     return {
@@ -14,7 +14,7 @@ export const rollupPluginLinkPackages = (hook?: string) => {
                     const dest = `${targetDir}/node_modules/${i}`
                     const packageFolder = `${globalConfig.targetPath}/node_modules/${i}`
                     const isDirExist = existsSync(packageFolder)
-                    if (isDirExist) {
+                    if (isDirExist && !existsSync(dest)) {
                         mkdirSync(dirname(dest), { recursive: true })
                         symlinkSync(packageFolder, dest)
                     }

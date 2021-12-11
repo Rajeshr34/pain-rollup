@@ -1,6 +1,6 @@
-import { globalConfig } from '../build'
 import { join } from 'path'
 import { copyFile, writeFile } from '../common'
+import { globalConfig } from '../../interfaces'
 
 export const rollupPluginPacking = (hook?: string) => {
     return {

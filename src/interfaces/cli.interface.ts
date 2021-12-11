@@ -58,3 +58,10 @@ export interface copyFileFoldersInterface {
     target?: string
     modify?: (data: string) => string
 }
+
+export const globalConfig: GlobalConfigInterface = {
+    packageInfo: {},
+    targetPath: '',
+    cliPath: '',
+    targetDistFolderPath: '',
+}
