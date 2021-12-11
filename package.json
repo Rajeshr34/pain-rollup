@@ -1,6 +1,6 @@
 {
     "name": "@pain-org/rollup",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "description": "",
     "main": "rollup.js",
     "module": "rollup.esm.js",
