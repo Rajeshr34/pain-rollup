@@ -88,7 +88,7 @@ export const getInputOptions = async (
         // console.log(msg)
     }
 
-    let nodeResolveOptions: RollupNodeResolveOptions = {}
+    let nodeResolveOptions: RollupNodeResolveOptions = { browser: options.web }
     if (painConfigData.resolveOptions) {
         nodeResolveOptions = await painConfigData.resolveOptions(nodeResolveOptions)
     }

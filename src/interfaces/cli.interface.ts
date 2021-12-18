@@ -10,6 +10,7 @@ export interface BuildOptionsInterface {
     sourcemap: boolean
     visualizer: boolean
     resolve: boolean
+    web: boolean
     preserveModules: boolean
 }
 

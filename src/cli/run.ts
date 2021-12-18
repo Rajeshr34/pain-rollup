@@ -55,6 +55,11 @@ export function commonCommand(item: Command) {
         new Option('-s --sourcemap <true|false>', 'Generate source map').default(false).argParser(booleanValue)
     )
     item.addOption(
+        new Option('-w --web <true|false>', 'Instructs the plugin to use the browser module resolutions')
+            .default(false)
+            .argParser(booleanValue)
+    )
+    item.addOption(
         new Option(
             '-v --visualizer <true|false>',
             'Visualize and analyze your Rollup bundle to see which modules are taking up space.'
