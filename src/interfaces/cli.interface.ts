@@ -1,4 +1,5 @@
 import { Plugin, WatcherOptions } from 'rollup'
+import { RollupNodeResolveOptions } from '@rollup/plugin-node-resolve'
 
 export interface BuildOptionsInterface {
     target: string
@@ -44,6 +45,7 @@ export interface PainCustomConfigInterface {
     replace?: {
         [str: string]: string | number
     }
+    resolveOptions?: (option: RollupNodeResolveOptions) => Promise<RollupNodeResolveOptions>
     plugins?: (list: (Plugin | null | false | undefined)[]) => (Plugin | null | false | undefined)[]
     callbacks?: {
         onStart?: () => Promise<void>

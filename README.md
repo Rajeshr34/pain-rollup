@@ -57,12 +57,17 @@ Options:
 ```
 import { Plugin } from 'rollup'
 import { PainCustomConfigInterface, PackageInfoInterface } from '@pain-org/rollup'
+import { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 
 export const painConfig = async (pkgInfo: PackageInfoInterface, tagetPath: string): Promise<PainCustomConfigInterface> => {
     return <PainCustomConfigInterface>{
         replace: {
             //search and replace,
         },
+        resolveOptions: async (option: RollupNodeResolveOptions) => {
+
+            return option;
+        }
         plugins: (list: (Plugin | null | false | undefined)[]) => {
             // modifiy plugins add/remove and return the list
             return list

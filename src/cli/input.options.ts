@@ -2,7 +2,7 @@ import { BuildOptionsInterface, globalConfig, PainCustomConfigInterface } from '
 import { ModuleFormat, OutputOptions, Plugin, RollupOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import { join } from 'path'
-import nodeResolve from '@rollup/plugin-node-resolve'
+import nodeResolve, { RollupNodeResolveOptions } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import replace from '@rollup/plugin-replace'
@@ -53,7 +53,8 @@ export const mergeObject = <T>(source: T, target: T): T => {
 }
 
 export const getInputOptions = async (
-    options: BuildOptionsInterface
+    options: BuildOptionsInterface,
+    watch?: boolean
 ): Promise<{ rollConfig: RollupOptions; userConfig: PainCustomConfigInterface }> => {
     const painConfigData = await getPainConfig()
     if (painConfigData?.callbacks?.onStart) await painConfigData.callbacks.onStart()
@@ -86,12 +87,21 @@ export const getInputOptions = async (
     item.onwarn = () => {
         // console.log(msg)
     }
+
+    let nodeResolveOptions: RollupNodeResolveOptions = {}
+    if (painConfigData.resolveOptions) {
+        nodeResolveOptions = await painConfigData.resolveOptions(nodeResolveOptions)
+    }
     item.plugins = [
-        eslint({
-            fix: true,
-            throwOnWarning: false,
-        }),
-        ...[options.resolve ? nodeResolve() : null],
+        ...[
+            !watch
+                ? eslint({
+                      fix: true,
+                      throwOnWarning: false,
+                  })
+                : null,
+        ],
+        ...[options.resolve ? nodeResolve(nodeResolveOptions) : null],
         commonjs(),
         json(),
         ts({
