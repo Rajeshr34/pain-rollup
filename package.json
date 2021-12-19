@@ -11,7 +11,7 @@
         "commit": "cz",
         "release": "standard-version",
         "cli": "ts-node ./bin/cli.ts build",
-        "build": "ts-node ./bin/cli.ts build -d true",
+        "build": "ts-node ./bin/cli.ts build -rc test.ts -d true",
         "watch": "ts-node ./bin/cli.ts watch -d true",
         "cli_help": "yarn cli -- watch --help"
     },

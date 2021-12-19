@@ -11,6 +11,7 @@ export interface BuildOptionsInterface {
     visualizer: boolean
     resolve: boolean
     web: boolean
+    painConfig: string
     preserveModules: boolean
 }
 
@@ -37,6 +38,7 @@ export interface PackageInfoInterface {
 
 export interface GlobalConfigInterface {
     packageInfo: PackageInfoInterface
+    warnings: []
     targetPath: string
     targetDistFolderPath: string
     cliPath: string
@@ -65,6 +67,7 @@ export interface copyFileFoldersInterface {
 export const globalConfig: GlobalConfigInterface = {
     packageInfo: {},
     targetPath: '',
+    warnings: [],
     cliPath: '',
     targetDistFolderPath: '',
 }

@@ -1,7 +1,7 @@
 import { Command, Option } from 'commander'
 import { build } from './build'
 import { outputFormats } from './input.options'
-import { BuildOptionsInterface, WatchOptionsInterface } from '../interfaces/cli.interface'
+import { BuildOptionsInterface, WatchOptionsInterface } from '../interfaces'
 import { painWatch } from './watch'
 
 function splitSeparateList(value: string, defaultValue?: string | undefined): string | undefined {

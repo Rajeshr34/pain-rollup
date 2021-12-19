@@ -11,6 +11,16 @@ export const cleanDist = async (dir = './dist') => {
     return progressEstimator(emptyDir(dir), 'Cleaning dist folder')
 }
 
+export const writeWarnings = () => {
+    if (globalConfig.warnings && globalConfig.warnings.length > 0) {
+        console.warn('######################################################################################')
+        globalConfig.warnings.forEach((i) => {
+            console.warn(`####     ` + i)
+        })
+        console.warn('######################################################################################')
+    }
+}
+
 export const rollUpConfig = async (rollUpConfigData: RollupOptions) => {
     const bundle = await progressEstimator(rollup(rollUpConfigData), 'RollUp Initializing')
     return Promise.all(

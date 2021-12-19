@@ -11,6 +11,7 @@ import {
     progressEstimator,
     rotateEarth,
     setPaths,
+    writeWarnings,
 } from './common'
 import { getInputOptions } from './input.options'
 
@@ -47,6 +48,7 @@ export const painWatch = async (options: BuildOptionsInterface) => {
                 break
         }
     })
+    writeWarnings()
     await progressEstimator(Promise.resolve(), 'BUILD SUCCESS')
     if (userConfig?.callbacks?.onComplete) {
         await userConfig.callbacks.onComplete()

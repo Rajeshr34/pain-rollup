@@ -1,4 +1,4 @@
-import { BuildOptionsInterface, globalConfig, PainCustomConfigInterface } from '../interfaces/cli.interface'
+import { BuildOptionsInterface, globalConfig, PainCustomConfigInterface } from '../interfaces'
 import { ModuleFormat, OutputOptions, Plugin, RollupOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import { join } from 'path'
@@ -18,11 +18,11 @@ import { rollupPluginCopyFilesFolder } from './plugins/rollup-plugin-copy-files-
 
 export const outputFormats = 'amd,cjs,es,iife,umd,system'.split(',')
 
-export async function getPainConfig(isCliConfig = false, config?: string): Promise<PainCustomConfigInterface> {
-    const ROLLUP_CONFIG_PATH = join(
-        isCliConfig ? globalConfig.cliPath : globalConfig.targetPath,
-        config ?? 'pain.config.ts'
-    )
+export async function getPainConfig(config?: string): Promise<PainCustomConfigInterface> {
+    let ROLLUP_CONFIG_PATH = join(globalConfig.targetPath, config ?? 'pain.config.ts')
+    if (!existsSync(ROLLUP_CONFIG_PATH)) {
+        ROLLUP_CONFIG_PATH = join(globalConfig.targetPath, 'pain.config.ts')
+    }
     if (existsSync(ROLLUP_CONFIG_PATH)) {
         const { painConfig } = await import(ROLLUP_CONFIG_PATH)
         return painConfig ? await painConfig(globalConfig.packageInfo, globalConfig.targetPath) : null
@@ -56,7 +56,7 @@ export const getInputOptions = async (
     options: BuildOptionsInterface,
     watch?: boolean
 ): Promise<{ rollConfig: RollupOptions; userConfig: PainCustomConfigInterface }> => {
-    const painConfigData = await getPainConfig()
+    const painConfigData = await getPainConfig(options.painConfig)
     if (painConfigData?.callbacks?.onStart) await painConfigData.callbacks.onStart()
     const item: RollupOptions = {}
     const appName = globalConfig.packageInfo.nameWithoutScope
@@ -84,10 +84,17 @@ export const getInputOptions = async (
         appError({ msg: 'Required valid format settings,', givenFormat: options.format })
     }
     item.output = outputItems
-    item.onwarn = () => {
+    item.onwarn = (msg) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        globalConfig.warnings.push(msg.message)
         // console.log(msg)
     }
-
+    if (!options.resolve) {
+        item.external = globalConfig.packageInfo.dependencies
+            ? (Object.keys(globalConfig.packageInfo.dependencies) as string[])
+            : []
+    }
     let nodeResolveOptions: RollupNodeResolveOptions = { browser: options.web }
     if (painConfigData.resolveOptions) {
         nodeResolveOptions = await painConfigData.resolveOptions(nodeResolveOptions)
