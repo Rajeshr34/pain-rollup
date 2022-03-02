@@ -13,7 +13,8 @@
         "cli": "ts-node ./bin/cli.ts build",
         "build": "ts-node ./bin/cli.ts build -rc test.ts -d true",
         "watch": "ts-node ./bin/cli.ts watch -d true",
-        "cli_help": "yarn cli -- watch --help"
+        "cli_help": "yarn cli -- watch --help",
+        "publish": "npm publish dist"
     },
     "keywords": [],
     "author": "Rajesh",
