@@ -71,16 +71,22 @@ export const objectPrefixSuffix = <T>(content: T, prefix?: string, suffix?: stri
 }
 
 export const commonReplace = () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const hash = require('child_process')
-        ?.execSync('git rev-parse HEAD', { cwd: globalConfig.targetPath })
-        ?.toString()
-        ?.trim()
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const branch = require('child_process')
-        ?.execSync('git rev-parse --abbrev-ref HEAD', { cwd: globalConfig.targetPath })
-        ?.toString()
-        ?.trim()
+    let hash
+    let branch
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        hash = require('child_process')
+            ?.execSync('git rev-parse HEAD', { cwd: globalConfig.targetPath })
+            ?.toString()
+            ?.trim()
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        branch = require('child_process')
+            ?.execSync('git rev-parse --abbrev-ref HEAD', { cwd: globalConfig.targetPath })
+            ?.toString()
+            ?.trim()
+    } catch (e) {
+        console.log(e)
+    }
     return objectPrefixSuffix(
         {
             buildDate: new Date().toString(),
