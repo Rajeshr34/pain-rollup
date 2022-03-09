@@ -18,7 +18,7 @@ import { getInputOptions } from './input.options'
 export const painWatch = async (options: BuildOptionsInterface) => {
     await setPaths(options)
     await loadPackageInfo()
-    const { rollConfig, userConfig } = await getInputOptions(options)
+    const { rollConfig, userConfig } = await getInputOptions(options, true)
     await cleanDist(globalConfig.targetDistFolderPath)
     //await build(options)
     const watcher = watch({ ...rollConfig, watch: { ...(userConfig.watch ? userConfig.watch : {}) } })
