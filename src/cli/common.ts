@@ -4,6 +4,7 @@ import { OutputOptions, rollup, RollupOptions } from 'rollup'
 import { existsSync, lstatSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, join, relative, resolve } from 'path'
 import { BuildOptionsInterface, globalConfig } from '../interfaces'
+import { makeHtmlAttributes, RollupHtmlTemplateOptions } from '@rollup/plugin-html'
 
 export const progressEstimator = createProgressEstimator()
 
@@ -159,4 +160,26 @@ export const isDir = (dirPath: string) => {
         // lstatSync throws an error if path doesn't exist
         return false
     }
+}
+
+export const rollupHtmlGen = (filePath: string, templateoptions?: RollupHtmlTemplateOptions) => {
+    let htmlData = readFileSync(filePath, 'utf-8')
+    const scripts = (templateoptions?.files.js || [])
+        .map(({ fileName }) => {
+            const attrs = makeHtmlAttributes(templateoptions?.attributes.script)
+            return `<script src="${templateoptions?.publicPath}${fileName}"${attrs}></script>`
+        })
+        .join('\n')
+    const links = (templateoptions?.files.css || [])
+        .map(({ fileName }) => {
+            const attrs = makeHtmlAttributes(templateoptions?.attributes.link)
+            return `<link href="${templateoptions?.publicPath}${fileName}" rel="stylesheet"${attrs}>`
+        })
+        .join('\n')
+    const items: any = { scripts, links, title: templateoptions?.title }
+    Object.keys(items).map((i) => {
+        htmlData = htmlData.replace('${' + i + '}', items[i])
+        return i
+    })
+    return htmlData
 }
